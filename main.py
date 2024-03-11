@@ -10,15 +10,14 @@ import sys
 
 
 args = [arg for arg in sys.argv[1:]]
-if len(args) == 6:
+if len(args) == 5:
     bus_naptan = args[0]
     route = args[1]
-    bus_direction = args[2]
-    overground_naptan = args[3]
-    overground_direction = args[4]
-    interval = int(args[5])
+    overground_naptan = args[2]
+    overground_direction = args[3]
+    interval = int(args[4])
 else:
-    raise SystemExit(f"Usage: {sys.argv[0]} <bus NAPTAN> <bus route> <bus direction (inbound, outbound)> <overground NAPTAN> <overground direction (inbound, outbound)> <check interval (secs)>")
+    raise SystemExit(f"Usage: {sys.argv[0]} <bus NAPTAN> <bus route> <overground NAPTAN> <overground direction (inbound, outbound)> <check interval (secs)>")
 
 print(bus_naptan, overground_naptan)
 active = False
@@ -26,18 +25,18 @@ def getBus(naptan, only=None):
     recv = requests.get("https://api.tfl.gov.uk/StopPoint/" + naptan + "/arrivals" ).json()
     buses = []
     for x in recv:
-        if x['direction'] == bus_direction:
-            data = {}
-            data['mins'] = floor(x['timeToStation']/60)
-            data['secs'] = x['timeToStation'] - (data['mins'] * 60)
-            data['destination'] = x['destinationName']
-            data['route'] = x['lineId']
-            data['name'] = x['stationName']
-            if only == None:
+        
+        data = {}
+        data['mins'] = floor(x['timeToStation']/60)
+        data['secs'] = x['timeToStation'] - (data['mins'] * 60)
+        data['destination'] = x['destinationName']
+        data['route'] = x['lineId']
+        data['name'] = x['stationName']
+        if only == None:
+            buses.append(data)
+        else:
+            if data['route'] == only:
                 buses.append(data)
-            else:
-                if data['route'] == only:
-                    buses.append(data)
     
     buses.sort(key=lambda s: (s['mins']*60) + s['secs'])
     
@@ -48,8 +47,8 @@ def getOverground(naptan):
     trains = []
     for x in recv:
         
+        
         if x['direction'] == overground_direction:
-            print(x)
             data = {}
             data['mins'] = floor(x['timeToStation']/60)
             data['secs'] = x['timeToStation'] - (data['mins'] * 60)
@@ -74,7 +73,7 @@ def writer():
             
             
             
-            draw.text((200, 10),buses[0]['name'].upper() + " ARRIVALS",color,font=font)
+            draw.text((200, 10),buses[0]['name'].upper(),color,font=font)
             draw.text((0, 50),"-------------------------------------------------",color,font=font)
             spacing = 0
             for x in buses:
@@ -88,7 +87,7 @@ def writer():
             
             end += 65
             trains = getOverground(overground_naptan)
-            draw.text((165, end + 10),trains[0]['name'].upper() + " ARRIVALS",color,font=font)
+            draw.text((165, end + 10),trains[0]['name'].upper(),color,font=font)
             draw.text((0, end + 50),"-------------------------------------------------",color,font=font)
             spacing = 0
             for x in trains:
@@ -131,7 +130,7 @@ def reader():
             pygame.display.flip()
             clock.tick(60)
 if __name__ == '__main__':
-    w = Thread(target = writer).start()
-    r = Thread(target = reader).start()
+    w = Thread(target=writer).start()
+    r = Thread(target=reader).start()
     
     
