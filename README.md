@@ -2,6 +2,16 @@
 
 This project provides a live display of bus and overground train arrivals using Transport for London's API. It utilizes Python along with various libraries for fetching data, image processing, and GUI display.
 
+## About Naptan
+The national public transport access nodes (NaPTAN) is a national dataset of all public transport ‘stops’ in England, Scotland and Wales.
+
+This includes:
+
+- bus stops and railway stations
+- tram, metro and underground stops
+- airports and ferry terminals
+
+Read more and find your stop's NAPTAN at [Link](https://www.gov.uk/government/publications/national-public-transport-access-node-schema/html-version-of-schema)
 ## Requirements
 
 - Python 3.x
@@ -21,7 +31,7 @@ This project provides a live display of bus and overground train arrivals using 
 3. Run the application:
 
    ```bash
-   python main.py <bus NAPTAN> <bus route> <bus direction (inbound, outbound)> <overground NAPTAN> <overground direction (inbound, outbound)> <check interval (secs)>
+   python main.py <bus NAPTAN> <bus route> <overground NAPTAN> <overground direction (inbound, outbound)> <check interval (secs)>
    ```
 
    Ensure you provide the required arguments correctly.
