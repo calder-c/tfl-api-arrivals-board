@@ -14,8 +14,8 @@ This project provides a live display of bus and overground train arrivals using 
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your_username/your_repository.git
-   cd your_repository
+   git clone https://github.com/calder-c/tfl-api-arrivals-board.git
+   cd tfl-api-arrivals-board
    ```
 
 3. Run the application:
