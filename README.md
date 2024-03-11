@@ -24,12 +24,6 @@ This project provides a live display of bus and overground train arrivals using 
    python main.py <bus NAPTAN> <bus route> <bus direction (inbound, outbound)> <overground NAPTAN> <overground direction (inbound, outbound)> <check interval (secs)>
    ```
 
-   Example:
-
-   ```bash
-   python main.py <bus NAPTAN> <bus route> <bus direction (inbound, outbound)> <overground NAPTAN> <overground direction (inbound, outbound)> <interval (secs)>
-   ```
-
    Ensure you provide the required arguments correctly.
    You must provide all of these arguments for the code to run properly.
 
