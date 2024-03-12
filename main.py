@@ -8,7 +8,7 @@ from threading import Thread
 import pygame
 import sys
 
-
+running = True
 args = [arg for arg in sys.argv[1:]]
 if len(args) == 5:
     bus_naptan = args[0]
@@ -97,26 +97,29 @@ def writer():
                 draw.text((10, spacing*45 + end + 50),text,color,font=font)
             img.save('display.jpg')
             active=True
+            if not running:
+                exit(0)
             time.sleep(interval)
         except Exception as e:
             print(e)
+            
 def reader():
     global active
+    global running
     pygame.init()
     border1 = 1000
     border2 = 1200
     screen = pygame.display.set_mode((border1, border2))
     pygame.display.set_caption("TFL BUS")
-    done = False
     clock = pygame.time.Clock()
     def pilImageToSurface(pilImage):
         return pygame.image.fromstring(
             pilImage.tobytes(), pilImage.size, pilImage.mode).convert()
-    while not done:
+    while running:
             for event in pygame.event.get():
                     if event.type == pygame.QUIT:
-                        done = True
-
+                        running = False
+            
             # Clear screen to white before drawing 
             screen.fill((0, 0, 0))
             try:
@@ -130,7 +133,15 @@ def reader():
             pygame.display.flip()
             clock.tick(60)
 if __name__ == '__main__':
-    w = Thread(target=writer).start()
-    r = Thread(target=reader).start()
     
+    w = Thread(target=writer, daemon=True).start()
+    r = Thread(target=reader, daemon=True).start()
+    while True:
+        try:
+            time.sleep(1)
+            if not running:
+                exit(0)
+        except KeyboardInterrupt:
+            running = False
+            exit(0)
     
